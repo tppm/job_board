@@ -1,0 +1,14 @@
+{% extends 'board/base.html' %}
+
+{% block title %}{{ job.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ job.title }}</h1>
+<h4>{{ job.company }}</h4>
+<p><strong>Location:</strong> {{ job.location }}</p>
+<p><strong>Posted on:</strong> {{ job.posted_date|date:"F j, Y" }}</p>
+<p><strong>Application Deadline:</strong> {{ job.application_deadline|date:"F j, Y" }}</p>
+<p><strong>Salary:</strong> ${{ job.salary }}</p>
+<p>{{ job.description }}</p>
+<a href="{% url 'job_listings' %}" class="btn btn-secondary">Back to Listings</a>
+{% endblock %}

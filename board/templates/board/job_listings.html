@@ -1,0 +1,32 @@
+{% extends 'board/base.html' %}
+
+{% block title %}Job Listings{% endblock %}
+
+{% block content %}
+<!-- Search Bar -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'job_listings' %}">
+            <input class="form-control mr-sm-2 w-75" type="search" name="q" placeholder="Search for jobs" aria-label="Search" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</div>
+
+<!-- Job Listings -->
+<div class="row">
+    {% for job in jobs %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ job.title }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ job.company }}</h6>
+                    <p class="card-text">{{ job.location }}</p>
+                    <p class="card-text"><small class="text-muted">Posted on {{ job.posted_date|date:"F j, Y" }}</small></p>
+                    <a href="{% url 'job_details' job.id %}" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
