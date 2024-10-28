@@ -6,9 +6,9 @@
 <!-- Search Bar -->
 <div class="row mb-4">
     <div class="col-md-12">
-        <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'job_listings' %}">
-            <input class="form-control mr-sm-2 w-75" type="search" name="q" placeholder="Search for jobs" aria-label="Search" value="{{ request.GET.q }}">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <form class="d-flex" method="get" action="{% url 'job_listings' %}">
+            <input class="form-control me-2 w-75" type="search" name="q" placeholder="Search for jobs" aria-label="Search" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
     </div>
 </div>

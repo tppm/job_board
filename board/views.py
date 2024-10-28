@@ -4,6 +4,8 @@ from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
+from .models import UserProfile
+
 
 def job_listings(request):
     query = request.GET.get('q')
@@ -31,8 +33,10 @@ def contact(request):
 
 @login_required
 def profile(request):
-    return render(request, 'board/profile.html')
-
+    user = request.user
+    if not hasattr(user, 'userprofile'):
+        UserProfile.objects.create(user=user)
+    return render(request, 'board/profile.html', {'user': user})
 
 def signup(request):
     if request.method == 'POST':
