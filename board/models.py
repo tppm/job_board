@@ -52,22 +52,39 @@ TECH_SKILLS_CHOICES = [
 
 # Get a list of languages from pycountry
 LANGUAGES_CHOICES = [(lang.alpha_2, lang.name) for lang in pycountry.languages if hasattr(lang, 'alpha_2')]
+
 JOB_STATUS_CHOICES = [
     ('job_seeker', 'Job Seeker'),
     ('recruiter', 'Recruiter'),
 ]
 
+class Language(models.Model):
+    code = models.CharField(max_length=2, choices=LANGUAGES_CHOICES, unique=True)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Skill(models.Model):
+    code = models.CharField(max_length=50, choices=TECH_SKILLS_CHOICES, unique=True)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
-    nationality = CountryField(blank=True, null=True)
-    country_of_residence = CountryField(blank=True, null=True)
+    nationality = CountryField(multiple=True, blank=True, default='None')
+    country_of_residence = CountryField(multiple=True, blank=True, default='None')
+    languages = models.ManyToManyField(Language, blank=True)
     linkedin = models.URLField(blank=True, null=True)
     x_profile = models.URLField(blank=True, null=True)  # Assuming "X" is a social media platform
     github = models.URLField(blank=True, null=True)
+    skills = models.ManyToManyField(Skill, blank=True)
     career_summary = models.TextField(blank=True, null=True)
-    skills = models.CharField(max_length=50, choices=TECH_SKILLS_CHOICES, blank=True, null=True)
-    languages = models.CharField(max_length=50, choices=LANGUAGES_CHOICES, blank=True, null=True)
     previous_employment = models.TextField(blank=True, null=True)
     education = models.TextField(blank=True, null=True)
     personal_projects = models.TextField(blank=True, null=True)

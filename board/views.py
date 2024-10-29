@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from .models import UserProfile
-
+from .forms import UserProfileForm
 
 def job_listings(request):
     query = request.GET.get('q')
@@ -36,7 +36,14 @@ def profile(request):
     user = request.user
     if not hasattr(user, 'userprofile'):
         UserProfile.objects.create(user=user)
-    return render(request, 'board/profile.html', {'user': user})
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, request.FILES, instance=user.userprofile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = UserProfileForm(instance=user.userprofile)
+    return render(request, 'board/profile.html', {'form': form})
 
 def signup(request):
     if request.method == 'POST':

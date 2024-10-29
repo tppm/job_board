@@ -1,9 +1,16 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import JobListing, Benefit, Flair, UserProfile
+from .models import JobListing, Benefit, Flair, UserProfile, Language, Skill
 
 
+
+
+
+@admin.register(Skill)
+class SkillAdmin(admin.ModelAdmin):
+    list_display = ('name', 'code')
+    search_fields = ('name', 'code')
 
 @admin.register(Benefit)
 class BenefitAdmin(admin.ModelAdmin):
