@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from .models import UserProfile
-from .forms import UserProfileForm
+from .forms import UserProfileForm, JobPostingForm
 
 def job_listings(request):
     query = request.GET.get('q')
@@ -55,3 +55,15 @@ def signup(request):
     else:
         form = UserCreationForm()
     return render(request, 'board/signup.html', {'form': form})
+
+
+@login_required
+def post_job(request):
+    if request.method == 'POST':
+        form = JobPostingForm(request.POST, request.FILES)
+        if form.is_valid():
+            job = form.save()
+            return redirect('job_details', id=job.id)
+    else:
+        form = JobPostingForm()
+    return render(request, 'board/post_job.html', {'form': form})

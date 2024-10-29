@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserProfile, Language, Skill
+from .models import UserProfile, Language, Skill, JobListing
 from django_countries.widgets import CountrySelectWidget
 import pycountry
 
@@ -93,3 +93,25 @@ class UserProfileForm(forms.ModelForm):
                 Skill.objects.create(code=code, name=name)
             skill_choices = [(skill.code, skill.name) for skill in Skill.objects.all()]
         self.fields['skills'].choices = skill_choices
+
+
+
+
+
+class JobPostingForm(forms.ModelForm):
+    class Meta:
+        model = JobListing
+        fields = [
+            'title', 'company', 'company_logo', 'location', 'contract_type',
+            'description', 'application_deadline', 'salary', 'experience_level',
+            'work_type', 'travel_required', 'benefits', 'flairs'
+        ]
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 5}),
+            'application_deadline': forms.DateTimeInput(
+                attrs={'type': 'datetime-local'},
+                format='%Y-%m-%dT%H:%M'
+            ),
+            'benefits': forms.CheckboxSelectMultiple(),
+            'flairs': forms.CheckboxSelectMultiple(),
+        }
